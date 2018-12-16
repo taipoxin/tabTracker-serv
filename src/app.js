@@ -3,15 +3,15 @@
 const makeDebug = require('debug');
 const mongoose = require('mongoose');
 const express = require('express');
-const page = require('./models/page');
+const Page = require('./models/page');
 
 const debug = makeDebug('app');
 
-// mongoose.connect('mongodb://Kaneki:27017/tab-tracker', { useNewUrlParser: true });
+mongoose.connect('mongodb://Kaneki:27017/tab-tracker', { useNewUrlParser: true });
 
-// mongoose.connection.once('open', () => {
-//   debug('connected to database');
-// });
+mongoose.connection.once('open', () => {
+  debug('connected to database');
+});
 
 // Create an express server and a GraphQL endpoint
 const app = express();
@@ -44,11 +44,41 @@ app.use((req, res, next) => {
 });
 
 app.post('/new', async (req: express$Request, res: express$Response) => {
-  console.log(req.body);
+  // console.log(req.body);
   debug(req.body);
   // TODO: save data
-  res.status(200);
-  res.send({ status: 'OK' });
+  try {
+    const data: any = req.body;
+    const { user, title, datetime } = data;
+    debug(
+      `user: ${user};`
+      + `title: ${title};`
+      + `datetime: ${datetime};`,
+    );
+    const page = new Page({
+      user,
+      title,
+      datetime,
+    });
+
+    res.send(await page.save());
+  } catch (err) {
+    const data = {
+      statusCode: 400,
+      error: 'Bad Request',
+      message: 'Bad Request',
+    };
+    if (err instanceof TypeError) {
+      data.message = 'Bad arguments';
+      res.status(400);
+      res.send(data);
+      return;
+    }
+    // other errors
+    debug(err);
+    res.status(400);
+    res.send(data);
+  }
 });
 
 process
