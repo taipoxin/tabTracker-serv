@@ -1,0 +1,80 @@
+{
+  "name": "flow-node-boilerplate",
+  "version": "0.0.1",
+  "description": "",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "author": {
+    "name": "Dmitriy Ermakovich",
+    "email": "ermakovichdmitriy@gmail.com"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "build": "npm run clean && flow-remove-types src/ -d lib/",
+    "start": "node  ./lib/index.js",
+    "dev": "nodemon --exec npm run faststart",
+    "lint": "eslint .",
+    "test": "mocha",
+    "coverage": "npm test -- --coverage",
+    "postcoverage": "opn coverage/lcov-report/index.html",
+    "flow": "flow check",
+    "flow:typed": "flow-typed install",
+    "docs": "documentation readme src --section=API",
+    "postdocs": "git add README.md",
+    "clean": "rimraf lib",
+    "version": "standard-changelog && git add CHANGELOG.md",
+    "postpublish": "git push origin master --follow-tags",
+    "faststart": "npm run build && npm run start",
+    "buildlintstart": "npm run build && npm run lintfix && npm run start",
+    "lintfix": "eslint . --fix",
+    "testb": "npm run build && mocha"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "lib/"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "debug": "^4.1.0",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "@babel/core": "^7.2.0",
+    "babel-eslint": "^10.0.1",
+    "chai": "^4.2.0",
+    "documentation": "vicapow/documentation#a560a4373c301e37251f13e045811932c9c4ac01",
+    "eslint": "^5.6.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-flowtype": "^3.0.0",
+    "eslint-plugin-flowtype-errors": "^3.5.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "flow-bin": "^0.81.0",
+    "flow-copy-source": "^2.0.2",
+    "husky": "^1.1.2",
+    "lint-staged": "^7.2.2",
+    "nodemon": "^1.18.7",
+    "opn-cli": "^3.1.0",
+    "rimraf": "^2.6.2",
+    "standard-changelog": "^2.0.1",
+    "flow-typed": "^2.5.1"
+  }
+}
