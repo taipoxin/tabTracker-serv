@@ -1,19 +1,17 @@
 // @flow
 
 const makeDebug = require('debug');
-
 const mongoose = require('mongoose');
 const express = require('express');
 const page = require('./models/page');
 
 const debug = makeDebug('app');
 
+// mongoose.connect('mongodb://Kaneki:27017/tab-tracker', { useNewUrlParser: true });
 
-mongoose.connect('mongodb://Kaneki:27017/tab-tracker', { useNewUrlParser: true });
-
-mongoose.connection.once('open', () => {
-  debug('connected to database');
-});
+// mongoose.connection.once('open', () => {
+//   debug('connected to database');
+// });
 
 // Create an express server and a GraphQL endpoint
 const app = express();
@@ -48,46 +46,10 @@ app.use((req, res, next) => {
 app.post('/new', async (req: express$Request, res: express$Response) => {
   console.log(req.body);
   debug(req.body);
-  // save data
+  // TODO: save data
   res.status(200);
   res.send({ status: 'OK' });
 });
-
-// app.post('/api/v1/paintings', async (req: express$Request, resp: express$Response) => {
-//   try {
-//     const data: any = req.body;
-//     const { name, url, technique } = data;
-//     debug('receive graphQL request on insertPainting');
-//     debug(
-//       `name: ${name}`
-//       + `url: ${url}`
-//       + `technique: ${technique}`,
-//     );
-//     const painting = new Painting({
-//       name,
-//       url,
-//       technique,
-//     });
-
-//     resp.send(await painting.save());
-//   } catch (err) {
-//     const data = {
-//       statusCode: 400,
-//       error: 'Bad Request',
-//       message: 'Bad Request',
-//     };
-//     if (err instanceof TypeError) {
-//       data.message = 'Bad arguments';
-//       resp.status(400);
-//       resp.send(data);
-//       return;
-//     }
-//     // other errors
-//     debug(err);
-//     resp.status(400);
-//     resp.send(data);
-//   }
-// });
 
 process
   .on('unhandledRejection', (reason, p) => {
@@ -106,7 +68,4 @@ app.listen(port, () => {
     + `localhost:${port}`);
 });
 
-
-debug('hello from %s', 'app');
-
-module.exports = { a: 10 };
+module.exports = { app };

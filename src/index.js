@@ -8,6 +8,6 @@ function testF(x, y) {
 }
 
 debug('hello from %s', 'index');
-debug(`a: ${app.a}`);
+// debug(`a: ${app.a}`);
 
 module.exports = testF;
